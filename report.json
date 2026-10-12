@@ -1,0 +1,79 @@
+{
+  "generated_at": "2026-10-12T19:52:06+03:00",
+  "sandbox_version": "sha256:50ed0a8933fe46f85abb17cdab16053a7b060204c704f3522ebcb19c7d0aee5b",
+  "source_sha256": {
+    "run_checks.py": "4d9de0c0055aa4d104dbd7677ddc51dea1a5c7cc46cf89ac19e92a4980977239",
+    "server.py": "9e4808cdf99667eaeda3cabd528820251dadb7649606ee98d09acda29f49a794",
+    "claims.json": "8eaa1e708a0fe1a36e12494bf9255c1c12fff485f8f2e8f49596c01f46f5ffc3",
+    "compose.yaml": "72d492a69bb1ad4be9d835b3400983a171b024f12c36bdf9658b900a4fab9866",
+    "terraform/main.tf": "4201abd6d1e05683a9011886464c77f5484eb1b8d4764608df5643c209bf36e2",
+    "terraform/.terraform.lock.hcl": "965c781ff10705b932c907849409353bf5bc5d73eb4909c458529ac2acf07c48",
+    "evidence/admin-mfa.json": "56bdd8eb9a0f8f7d94628e0aa662dc42cb8adcd4ea7c2c8b81ae8cb3207faf51",
+    "evidence/audit-export.json": "75367ab2889ce577e6da1f4689bfce9ac54478fd0b73daba04a581a8e316d87e"
+  },
+  "identity_provider": "http://localhost:8080/realms/customer",
+  "data": "synthetic",
+  "mode": "local",
+  "scope": "Keycloak password-grant and token-introspection smoke checks plus synthetic fixtures. Not browser SSO, a deployed vendor application, SCIM, or production certification.",
+  "results": [
+    {
+      "id": "sso",
+      "question": "Can the sample authenticate with the bundled identity provider?",
+      "answer": "Yes. It obtains and introspects a token from the local Keycloak realm.",
+      "owner": "Identity team",
+      "reviewed": "2026-09-30",
+      "check": "oidc_sign_in",
+      "status": "supported",
+      "detail": "Test user signed in. Token issuer http://localhost:8080/realms/customer, audience vendor-app, account"
+    },
+    {
+      "id": "group-access",
+      "question": "Can groups control the sample's authorization decisions?",
+      "answer": "Yes. Test groups map to read and export permissions in the sample function.",
+      "owner": "Identity team",
+      "reviewed": "2026-09-30",
+      "check": "group_permissions",
+      "status": "supported",
+      "detail": "admin export: allowed; viewer read: allowed; viewer export: denied"
+    },
+    {
+      "id": "deprovisioning",
+      "question": "Does disabling the test user block token requests and access?",
+      "answer": "Yes. After disabling, new token requests fail and the sample rejects the old token.",
+      "owner": "Identity team",
+      "reviewed": "2026-09-30",
+      "check": "revocation",
+      "status": "supported",
+      "detail": "After disabling a test user: new token request blocked; previous token rejected by the sample authorization function"
+    },
+    {
+      "id": "admin-mfa",
+      "question": "Is MFA enforced for privileged accounts?",
+      "answer": "Yes, for every privileged account.",
+      "owner": "Security team",
+      "reviewed": "2026-08-15",
+      "evidence": "evidence/admin-mfa.json",
+      "status": "contradicted",
+      "detail": "11/12 privileged accounts with MFA (synthetic sign-in log sample, 2026-10-10). Exceptions: admin-07"
+    },
+    {
+      "id": "audit-export",
+      "question": "Can we export audit logs?",
+      "answer": "Yes, a daily export to customer storage.",
+      "owner": "Platform team",
+      "reviewed": "2026-03-01",
+      "evidence": "evidence/audit-export.json",
+      "status": "stale",
+      "detail": "Evidence is 253 days old: 30/30 daily exports delivered (synthetic export job history, 2026-02-01)"
+    },
+    {
+      "id": "encryption-at-rest",
+      "question": "Is customer data encrypted at rest?",
+      "answer": "Yes, with AES-256.",
+      "owner": "Security team",
+      "reviewed": "2026-07-01",
+      "status": "unknown",
+      "detail": "Nothing to check: attested only. Needs a document and human review."
+    }
+  ]
+}

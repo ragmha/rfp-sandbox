@@ -1,0 +1,49 @@
+[
+  {
+    "id": "sso",
+    "question": "Can the sample authenticate with the bundled identity provider?",
+    "answer": "Yes. It obtains and introspects a token from the local Keycloak realm.",
+    "owner": "Identity team",
+    "reviewed": "2026-09-30",
+    "check": "oidc_sign_in"
+  },
+  {
+    "id": "group-access",
+    "question": "Can groups control the sample's authorization decisions?",
+    "answer": "Yes. Test groups map to read and export permissions in the sample function.",
+    "owner": "Identity team",
+    "reviewed": "2026-09-30",
+    "check": "group_permissions"
+  },
+  {
+    "id": "deprovisioning",
+    "question": "Does disabling the test user block token requests and access?",
+    "answer": "Yes. After disabling, new token requests fail and the sample rejects the old token.",
+    "owner": "Identity team",
+    "reviewed": "2026-09-30",
+    "check": "revocation"
+  },
+  {
+    "id": "admin-mfa",
+    "question": "Is MFA enforced for privileged accounts?",
+    "answer": "Yes, for every privileged account.",
+    "owner": "Security team",
+    "reviewed": "2026-08-15",
+    "evidence": "evidence/admin-mfa.json"
+  },
+  {
+    "id": "audit-export",
+    "question": "Can we export audit logs?",
+    "answer": "Yes, a daily export to customer storage.",
+    "owner": "Platform team",
+    "reviewed": "2026-03-01",
+    "evidence": "evidence/audit-export.json"
+  },
+  {
+    "id": "encryption-at-rest",
+    "question": "Is customer data encrypted at rest?",
+    "answer": "Yes, with AES-256.",
+    "owner": "Security team",
+    "reviewed": "2026-07-01"
+  }
+]

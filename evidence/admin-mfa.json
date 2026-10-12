@@ -1,0 +1,8 @@
+{
+  "source": "synthetic sign-in log sample",
+  "observed_at": "2026-10-10T08:00:00Z",
+  "scope": "privileged accounts with MFA",
+  "total": 12,
+  "passing": 11,
+  "exceptions": ["admin-07"]
+}
